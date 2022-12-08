@@ -69,33 +69,33 @@ class Person
                 int chance = random()%100;
                 int CHANCE_INFECTED; 
 
-		// Set infection rate based on risk level 
-		if (getRisk() == "low")
-		{
-			CHANCE_INFECTED = CHANCE_INFECTED_LOW; 
-		}
-		else if (getRisk() == "medium") 
-		{
-			CHANCE_INFECTED = CHANCE_INFECTED_MED;
-		}
-		else { CHANCE_INFECTED = CHANCE_INFECTED_HIGH; }        
-		
-		// Run probability
-		if (chance<CHANCE_INFECTED && getStatus() == "susceptible")
+				// Set infection rate based on risk level 
+				if (getRisk() == "low")
+				{
+					CHANCE_INFECTED = CHANCE_INFECTED_LOW; 
+				}
+				else if (getRisk() == "medium") 
+				{
+					CHANCE_INFECTED = CHANCE_INFECTED_MED;
+				}
+				else { CHANCE_INFECTED = CHANCE_INFECTED_HIGH; }        
+				
+				// Run probability
+				if (chance<CHANCE_INFECTED && getStatus() == "susceptible")
                     {
                         setStatus("infected");
                     }
             }
-            
-	    // When vaccine does not effective
-	    void vaccineNotEffective()
-   	    {
-		int chance = random()%100;
-		if (chance < CHANCE_VACCINE_FAIL && getStatus() == "vaccinated")
-		{
-			setStatus("susceptible");		
-		}
-	    }
+				
+			// When vaccine does not effective
+			void vaccineNotEffective()
+			{
+				int chance = random()%100;
+				if (chance < CHANCE_VACCINE_FAIL && getStatus() == "vaccinated")
+				{
+					setStatus("susceptible");		
+				}
+			}
 
             // Update status
             void updateStatus() 
@@ -145,7 +145,8 @@ class Population
                 if (i == 0)
                 {
                     personByID.setStatus("infected");
-		    personByID.setRisk("high");
+		    		personByID.setRisk("high");
+					high_risk.push_back(i);
                 }
                 persons.push_back(personByID);
             }
@@ -173,12 +174,12 @@ class Population
         };
 
 
-	// Return size of the population that is vaccinated
-	int vaccinated_size() 
-	{
-	    int vaccinated_size = persons.size()*getPercentage();
-	    return vaccinated_size;   
-	};
+		// Return size of the population that is vaccinated
+		int vaccinated_size() 
+		{
+			int vaccinated_size = persons.size()*getPercentage();
+			return vaccinated_size;   
+		};
 	 	
 
         // Return number of sick people
@@ -226,171 +227,171 @@ class Population
             return countInoculated; 
         }
 
-	
-	// Return number of vaccinated people
-	int CountVaccinated() 
-	{
-	    int countVaccinated = 0;
-	    for (auto &p: persons) 
-	    {
-		if (p.getStatus() == "vaccinated")
-		{
-			countVaccinated ++;
-		}
-	    }
-	    return countVaccinated;
-	}
-	
-	
-	// Return number of high-risk people 
-	int CountHigh() 
-	{
-	     int countHigh = 0;
-	     for (auto &p : persons) 
-	     {
-		if (p.getRisk() == "high")
-		{
-			countHigh ++;
-		}
-
-	     }
-	     return countHigh; 
-	}
-
-	
-	// Return number of med-risk people 
-	int CountMed()
-	{
-	     int countMed = 0;
-	     for (auto &p : persons) 
-	     {
-		if (p.getRisk() == "medium")
-		{
-			countMed ++;
-		}
-	     }
-	     return countMed; 
-	}
-
-	
-	// Return number of low-risk people 
-	int CountLow() 
-	{
-	     int countLow = 0; 
-	     for (auto &p : persons)
-	     {
-		if (p.getRisk() == "low")
-		{
-			countLow ++;
-		}
-	     }
-	     return countLow; 
-	} 
-	
-	
-	// Randomize % received vaccination (apart from patient Zero)  
-	void vaccinated()
-	{
-		// Get random and unique list of ID    
-		while (vaccination_id.size() < vaccinated_size())
-		{
-			int randomID = random()%persons.size(); 
-            // if randomID is Patient Zero, rerun until get another result
-            if (randomID != 0) { vaccination_id.push_back(randomID); } 
-            else 
-            {
-                //while (randomID == 0)
-                //{
-                int randomID = random()%persons.size();
-                //}
-				vaccination_id.push_back(randomID);
-            } 
-			// Sort list
-			vaccination_id.sort();
-			// Get only unique value from list 
-			vaccination_id.unique(); 
-		}
-
-		// Base on the ID on vaccination list 
-		// set status of people to vaccinated 
-		for (auto i : vaccination_id) 
-		{
-			Person &vaccine_person = getPerson(i);
-			vaccine_person.setStatus("vaccinated");
-		}
-	}        
-	
-	
-	// Randomly selected people with High-risk (need to include patient Zero) 
-	void high_risk_func() 
-	{
-		int stop = (persons.size()/3)-1;
-		// Get random and unique list of ID 
-		while (high_risk.size() < stop) // one third of the pop size & exclude Zero 
-		{
-			int randomID = random()%persons.size() + 1; 
-			high_risk.push_back(randomID);				
-			// Sort list 
-			high_risk.sort(); 
-			// Get only unique value from list 
-			high_risk.unique();
-				
-		}
-			
-		// Base on the ID in the collected list 
-		// set risk status to High 
-		for (auto j : high_risk)     
-		{
-			Person &high_person = getPerson(j);
-			high_person.setRisk("high");
-		}
-				 		
-	}
-
-	
-	// Randomly selected people with Medium-risk 
-	void med_risk_func() 
-	{
-		int stop = persons.size()/3;
-		// Get random and unique list of ID 
-		while (CountMed() < stop)
-		{
-			int randomID = random()%persons.size();
-			med_risk.push_back(randomID);
-			// Sort list 
-			med_risk.sort();
-			// Get only unique value from list 
-			med_risk.unique(); 
 		
-
-			// Base on the ID in the collected list 
-			// set risk status to Medium 
-			for (auto i : med_risk) 
+		// Return number of vaccinated people
+		int CountVaccinated() 
+		{
+			int countVaccinated = 0;
+			for (auto &p: persons) 
 			{
-				Person &med_person = getPerson(i);
-				if (med_person.getRisk() != "high") 
+			if (p.getStatus() == "vaccinated")
+			{
+				countVaccinated ++;
+			}
+			}
+			return countVaccinated;
+		}
+		
+	
+		// Return number of high-risk people 
+		int CountHigh() 
+		{
+			int countHigh = 0;
+			for (auto &p : persons) 
+			{
+			if (p.getRisk() == "high")
+			{
+				countHigh ++;
+			}
+
+			}
+			return countHigh; 
+		}
+
+	
+		// Return number of med-risk people 
+		int CountMed()
+		{
+			int countMed = 0;
+			for (auto &p : persons) 
+			{
+			if (p.getRisk() == "medium")
+			{
+				countMed ++;
+			}
+			}
+			return countMed; 
+		}
+
+	
+		// Return number of low-risk people 
+		int CountLow() 
+		{
+			int countLow = 0; 
+			for (auto &p : persons)
+			{
+			if (p.getRisk() == "low")
+			{
+				countLow ++;
+			}
+			}
+			return countLow; 
+		} 
+		
+	
+		// Randomize % received vaccination (apart from patient Zero)  
+		void vaccinated()
+		{
+			// Get random and unique list of ID    
+			while (vaccination_id.size() < vaccinated_size())
+			{
+				int randomID = random()%persons.size(); 
+				// if randomID is Patient Zero, rerun until get another result
+				if (randomID != 0) { vaccination_id.push_back(randomID); } 
+				else 
 				{
-					med_person.setRisk("medium");
+					//while (randomID == 0)
+					//{
+					int randomID = random()%persons.size();
+					//}
+					vaccination_id.push_back(randomID);
+				} 
+				// Sort list
+				vaccination_id.sort();
+				// Get only unique value from list 
+				vaccination_id.unique(); 
+			}
+
+			// Base on the ID on vaccination list 
+			// set status of people to vaccinated 
+			for (auto i : vaccination_id) 
+			{
+				Person &vaccine_person = getPerson(i);
+				vaccine_person.setStatus("vaccinated");
+			}
+		}        
+	
+	
+		// Randomly selected people with High-risk 
+		void high_risk_func() 
+		{
+			int stop = (persons.size()/3);
+			// Get random and unique list of ID 
+			while (high_risk.size() < stop) // one third of the pop size
+			{
+				int randomID = random()%persons.size(); 
+				high_risk.push_back(randomID);				
+				// Sort list 
+				high_risk.sort(); 
+				// Get only unique value from list 
+				high_risk.unique();
+					
+			}
+				
+			// Base on the ID in the collected list 
+			// set risk status to High 
+			for (auto j : high_risk)     
+			{
+				Person &high_person = getPerson(j);
+				high_person.setRisk("high");
+			}
+							
+		}
+
+	
+		// Randomly selected people with Medium-risk 
+		void med_risk_func() 
+		{
+			int stop = persons.size()/3;
+			// Get random and unique list of ID 
+			while (CountMed() < stop)
+			{
+				int randomID = random()%persons.size();
+				med_risk.push_back(randomID);
+				// Sort list 
+				med_risk.sort();
+				// Get only unique value from list 
+				med_risk.unique(); 
+			
+
+				// Base on the ID in the collected list 
+				// set risk status to Medium 
+				for (auto i : med_risk) 
+				{
+					Person &med_person = getPerson(i);
+					if (med_person.getRisk() != "high") 
+					{
+						med_person.setRisk("medium");
+					}
+				}
+
+				CountMed();
+			}
+		}
+
+
+		// Randomly selected people with Low-risk 
+		void low_risk_func() 
+		{
+			for (auto &p : persons) 
+			{
+				if (p.getRisk() == "") 
+				{
+					p.setRisk("low"); 	
 				}
 			}
 
-			CountMed();
 		}
-	}
-
-
-	// Randomly selected people with Low-risk 
-	void low_risk_func() 
-	{
-		for (auto &p : persons) 
-		{
-			if (p.getRisk() == "") 
-			{
-				p.setRisk("low"); 	
-			}
-		}
-
-	}
 
 
         // Simulation
@@ -538,11 +539,11 @@ int main()
      }
     
     // MAIN INFO 
-    //cout << "--------------------------------" << endl;
+    cout << "--------------------------------" << endl;
     //cout << "Total population size: " << population.size() << endl; 
-    //cout << "Percentage of people received vaccines: " << population.getPercentage() << endl; 
+    cout << "Percentage of people received vaccines: " << population.getPercentage() << endl; 
     //cout << "Total number of interactions per person: " << population.getInteraction() << endl;
-    //cout << "\n" << endl; 
+    cout << "\n" << endl; 
     
     return 0; 
 }

@@ -65,15 +65,15 @@ class Person
                     }
             }
             
-	    // When vaccine does not effective
-	    void vaccineNotEffective()
-   	    {
-		int chance = random()%100;
-		if (chance < CHANCE_VACCINE_FAIL && getStatus() == "vaccinated")
-		{
-			setStatus("susceptible");		
-		}
-	    }
+            // When vaccine does not effective
+            void vaccineNotEffective()
+            {
+                int chance = random()%100;
+                if (chance < CHANCE_VACCINE_FAIL && getStatus() == "vaccinated")
+                {
+                    setStatus("susceptible");		
+                }
+            }
 
             // Update status
             void updateStatus() 
@@ -130,7 +130,7 @@ class Population
         //------------------GETTERS------------------
         Person &getPerson(int ID) {return persons[ID];} 
         double  getPercentage(){return percentage_vaccinated;}
-	int getInteraction(){return max_interaction;}
+	    int getInteraction(){return max_interaction;}
         
         //------------------METHODS------------------
         // Add person (to be used out of the class)
@@ -147,12 +147,12 @@ class Population
         };
 
 
-	// Return size of the population that is vaccinated
-	int vaccinated_size() 
-	{
-	    int vaccinated_size = persons.size()*getPercentage();
-	    return vaccinated_size + 1; // exclude patient Zero   
-	};
+        // Return size of the population that is vaccinated
+        int vaccinated_size() 
+        {
+            int vaccinated_size = persons.size()*getPercentage();
+            return vaccinated_size + 1; // exclude patient Zero   
+        };
 	 	
 
         // Return number of sick people
@@ -201,52 +201,52 @@ class Population
         }
 
 	
-	// Return number of vaccinated people
-	int CountVaccinated() 
-	{
-	    int countVaccinated = 0;
-	    for (auto &p: persons) 
-	    {
-		if (p.getStatus() == "vaccinated")
-		{
-			countVaccinated ++;
-		}
-	    }
-	    return countVaccinated;
-	}
-	
-
-	// Randomize % received vaccination (apart from patient Zero)  
-	void vaccinated()
-	{
-		// Get random and unique ID   
-		while (vaccination_id.size() < vaccinated_size()) 
-		{
-			int randomID = random()%persons.size(); 
-            // if randomID is Patient Zero, rerun until get another result
-            if (randomID != 0) { vaccination_id.push_back(randomID); } 
-            else 
+        // Return number of vaccinated people
+        int CountVaccinated() 
+        {
+            int countVaccinated = 0;
+            for (auto &p: persons) 
             {
-                //while (randomID == 0)
-                //{
-                    int randomID = random()%persons.size();
-                //}
-                vaccination_id.push_back(randomID); 
-            } 
-			// Sort list 
-			vaccination_id.sort();
-			// Get only unique value from list 
-			vaccination_id.unique();   
-		}
+            if (p.getStatus() == "vaccinated")
+            {
+                countVaccinated ++;
+            }
+            }
+            return countVaccinated;
+        }
+        
 
-		// Base on the ID on vaccination list 
-		// set status of people to vaccinated 
-		for (auto i : vaccination_id) 
-		{
-			Person &vaccine_person = getPerson(i);
-			vaccine_person.setStatus("vaccinated");
-		}
-	}        
+        // Randomize % received vaccination (apart from patient Zero)  
+        void vaccinated()
+        {
+            // Get random and unique ID   
+            while (vaccination_id.size() < vaccinated_size()) 
+            {
+                int randomID = random()%persons.size(); 
+                // if randomID is Patient Zero, rerun until get another result
+                if (randomID != 0) { vaccination_id.push_back(randomID); } 
+                else 
+                {
+                    //while (randomID == 0)
+                    //{
+                        int randomID = random()%persons.size();
+                    //}
+                    vaccination_id.push_back(randomID); 
+                } 
+                // Sort list 
+                vaccination_id.sort();
+                // Get only unique value from list 
+                vaccination_id.unique();   
+            }
+
+            // Base on the ID on vaccination list 
+            // set status of people to vaccinated 
+            for (auto i : vaccination_id) 
+            {
+                Person &vaccine_person = getPerson(i);
+                vaccine_person.setStatus("vaccinated");
+            }
+        }        
 
 
         // Simulation

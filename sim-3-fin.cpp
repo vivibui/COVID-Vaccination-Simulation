@@ -92,57 +92,57 @@ class Person
                     }
             }
 	
-	    // Decease Rate 
-		void deceaseRate()
-		{
-			int chance = random()%100;
-			int CHANCE_DECEASED;
-
-			// Set decease rate based on risk level
-			if (getRisk() == "low") 
-				{
-					CHANCE_DECEASED = DEATH_LOW; 
-				}
-			else if (getRisk() == "medium") 
-				{
-					CHANCE_DECEASED = DEATH_MED;
-				}
-			else { CHANCE_DECEASED = DEATH_HIGH; }
-
-			// Run probability
-			if (chance < CHANCE_DECEASED) 
-				{
-					setStatus("deceased");
-				}
-		}
-            
-	    // When vaccine does not effective
-	    void vaccineNotEffective()
-   	    {
-			int chance = random()%100;
-			if (chance < CHANCE_VACCINE_FAIL && getStatus() == "vaccinated")
+			// Decease Rate 
+			void deceaseRate()
 			{
-				setStatus("susceptible");		
+				int chance = random()%100;
+				int CHANCE_DECEASED;
+
+				// Set decease rate based on risk level
+				if (getRisk() == "low") 
+					{
+						CHANCE_DECEASED = DEATH_LOW; 
+					}
+				else if (getRisk() == "medium") 
+					{
+						CHANCE_DECEASED = DEATH_MED;
+					}
+				else { CHANCE_DECEASED = DEATH_HIGH; }
+
+				// Run probability
+				if (chance < CHANCE_DECEASED) 
+					{
+						setStatus("deceased");
+					}
 			}
-	    }
-
-            // Update status
-        void updateStatus() 
-        {
-			if (getDaySick() == 1)
+            
+			// When vaccine does not effective
+			void vaccineNotEffective()
+			{
+				int chance = random()%100;
+				if (chance < CHANCE_VACCINE_FAIL && getStatus() == "vaccinated")
 				{
-					deceaseRate();
+					setStatus("susceptible");		
 				}
-            if (getDaySick() == 0)
-                {
-                    setStatus("recovered");
-                }
-            if (getStatus() == "infected")
-                {
-                    days_sick --; 
-                }
+			}
 
-        }
+				// Update status
+			void updateStatus() 
+			{
+				if (getDaySick() == 1)
+					{
+						deceaseRate();
+					}
+				if (getDaySick() == 0)
+					{
+						setStatus("recovered");
+					}
+				if (getStatus() == "infected")
+					{
+						days_sick --; 
+					}
+
+			}
 };
 
 
@@ -366,12 +366,12 @@ class Population
 		}        
 	
 	
-		// Randomly selected people with High-risk (need to include patient Zero) 
+		// Randomly selected people with High-risk
 		void high_risk_func() 
 		{
 			int stop = (persons.size()/3);
 			// Get random and unique list of ID 
-			while (high_risk.size() < stop) // one third of the pop size & exclude Zero 
+			while (high_risk.size() < stop) // one third of the pop size
 			{
 				int randomID = random()%persons.size(); 
 				high_risk.push_back(randomID);				
@@ -454,13 +454,13 @@ class Population
                         int randomID = random()%persons.size();
                         Person &random_person = getPerson(randomID); 
                         // if the person is vaccinated, see if vaccination fails 
-			if (random_person.getStatus() == "vaccinated")
-			{
-				random_person.vaccineNotEffective();
-			}
-			// if the vaccines fail, or if the person is not vaccinated
-			// see if they will be infected 
-			random_person.chanceToInfected();
+						if (random_person.getStatus() == "vaccinated")
+						{
+							random_person.vaccineNotEffective();
+						}
+						// if the vaccines fail, or if the person is not vaccinated
+						// see if they will be infected 
+						random_person.chanceToInfected();
 
                     }	
                 }
